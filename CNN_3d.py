@@ -48,7 +48,7 @@ def convolutional_neural_network(x):
 
 def train_neural_network(x):
 
-    much_data = np.load('alldata1-50-50-20.npy')
+    much_data = np.load('https://s3.amazonaws.com/cse6250-nliu71/alldata1-50-50-20.npy')
     train_data = much_data[:-300]
     validation_data = much_data[-300:]
 
