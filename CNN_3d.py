@@ -1,5 +1,7 @@
 import tensorflow as tf
 import numpy as np
+import urllib.request
+
 
 IMG_SIZE_PX = 50
 SLICE_COUNT = 20
@@ -47,8 +49,9 @@ def convolutional_neural_network(x):
     return output
 
 def train_neural_network(x):
-
-    much_data = np.load('https://s3.amazonaws.com/cse6250-nliu71/alldata1-50-50-20.npy')
+    myurl = 'https://s3.amazonaws.com/cse6250-nliu71/alldata1-50-50-20.npy'
+    much_data = urllib.request.urlopen(myurl).read()
+    # much_data = np.load(myfile)
     train_data = much_data[:-300]
     validation_data = much_data[-300:]
 
