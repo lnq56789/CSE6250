@@ -52,8 +52,8 @@ def train_neural_network(x):
     myurl = 'https://s3.amazonaws.com/cse6250-nliu71/alldata1-50-50-20.npy'
     much_data = urllib.request.urlopen(myurl).read()
     # much_data = np.load(myfile)
-    train_data = much_data[:-300]
-    validation_data = much_data[-300:]
+    train_data = much_data[:-20]
+    validation_data = much_data[-20:]
 
 
     prediction = convolutional_neural_network(x)
@@ -62,7 +62,7 @@ def train_neural_network(x):
     # learning_rate = 0.001
     optimizer = tf.train.AdamOptimizer().minimize(cost)
 
-    hm_epochs = 3
+    hm_epochs = 10
 
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
