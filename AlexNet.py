@@ -1,5 +1,7 @@
 import numpy as np
-data = np.load('../data/muchdata-50-50-20.npy') #load pre-processed data
+myurl = 'https://s3.amazonaws.com/cse6250-nliu71/alldata1-50-50-20.npy'
+data = urllib.request.urlopen(myurl).read()
+# much_data = np.load(myfile)#load pre-processed data
 
 import tensorflow as tf
 import numpy as np
@@ -83,8 +85,8 @@ def alex_net(x):
 
 much_data = data
 # If you are working with the basic sample data, use maybe 2 instead of 100 here... you don't have enough data to really do this
-train_data = much_data[:-2]
-validation_data = much_data[-2:]
+train_data = much_data[:-20]
+validation_data = much_data[-20:]
 import time
 
 def train_neural_network(x):
