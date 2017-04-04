@@ -191,7 +191,7 @@ def google_net(x):
     x = tf.reshape(x, shape=[-1, IMG_SIZE_PX, IMG_SIZE_PX, SLICE_COUNT, 1])
 
     ### conv-pool-lrn-conv-conv-lrn-pool
-    conv1 = tf.nn.relu(conv3d(x, weights['W_conv1'],[1,4,4,4,1])+biases['b_conv1'])
+    conv1 = tf.nn.relu(conv3d(x, weights['W_conv1'],[1,2,2,2,1])+biases['b_conv1'])
     pool1 = maxpool3d(conv1,[1,3,3,3,1],[1,2,2,2,1])
     lrn1 = tf.nn.lrn(pool1,5,bias=1.0,alpha=2e-05,beta=0.75)
 

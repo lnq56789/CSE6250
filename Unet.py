@@ -524,7 +524,7 @@ def train_unet(x,y,train_data,validation_data,n_classes,IMG_SIZE_PX,SLICE_COUNT,
 #   apply gradient clipping to eliminate gradient explosion problem
     cost = tf.reduce_mean( tf.nn.softmax_cross_entropy_with_logits(logits=prediction, labels=y) )
     optimizer = tf.train.AdamOptimizer(learning_rate=1e-3)
-    gradients =   optimizer.compute_gradients(cost)
+    gradients = optimizer.compute_gradients(cost)
 
     capped_gvs = [(ClipIfNotNone(grad), var) for grad, var in gradients]
     train_op = optimizer.apply_gradients(capped_gvs)
