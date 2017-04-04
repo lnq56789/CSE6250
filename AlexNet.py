@@ -1,10 +1,11 @@
 import urllib.request
+
 import tensorflow as tf
 import numpy as np
-
 # myurl = 'https://s3.amazonaws.com/cse6250-nliu71/alldata1-50-50-20.npy'
 # data = urllib.request.urlopen(myurl).read()
 data = np.load("../100samples-112-112-96.npy") #load pre-processed data
+
 
 IMG_SIZE_PX = 112
 SLICE_COUNT = 96
@@ -23,6 +24,15 @@ def conv3d(x, W, s):
 def maxpool3d(x,k,s):
     #                        size of window         movement of window as you slide about
     return tf.nn.max_pool3d(x, ksize=k, strides=s, padding='SAME')
+
+def ClipIfNotNone(grad):
+#    Credit to azni at http://stackoverflow.com/questions/39295136/gradient-clipping-appears-to-choke-on-none for solving none gradient problem
+    if grad is None:
+        return grad
+    return tf.clip_by_value(grad, -1, 1)
+  # Small utility function to evaluate a dataset by feeding batches of data to
+  # {eval_data} and pulling the results from {eval_predictions}.
+  # Saves memory and enables this to run on smaller GPUs.
 
 def AlexNet(x,n_classes,IMG_SIZE_PX,SLICE_COUNT,keep_rate):
     #Input image: 112*112*96
@@ -87,10 +97,14 @@ train_data = much_data[:-20]
 validation_data = much_data[-20:]
 import time
 
-def train_neural_network(x):
-    prediction = alex_net(x)
+def train_neural_network(x,n_classes,IMG_SIZE_PX,SLICE_COUNT,keep_rate):
+    prediction = AlexNet(x,n_classes,IMG_SIZE_PX,SLICE_COUNT,keep_rate)
     cost = tf.reduce_mean( tf.nn.softmax_cross_entropy_with_logits(logits=prediction,labels=y))
     optimizer = tf.train.AdamOptimizer(learning_rate=1e-3).minimize(cost)
+
+    gradients =   optimizer.compute_gradients(cost)
+    capped_gvs = [(ClipIfNotNone(grad), var) for grad, var in gradients]
+    train_op = optimizer.apply_gradients(capped_gvs)
 
     hm_epochs = 20
     with tf.Session() as sess:
@@ -107,7 +121,7 @@ def train_neural_network(x):
                 try:
                     X = data[0]
                     Y = data[1]
-                    _, c = sess.run([optimizer, cost], feed_dict={x: X, y: Y})
+                    _, c = sess.run([train_op, cost], feed_dict={x: X, y: Y})
                     epoch_loss += c
                     successful_runs += 1
                 except Exception as e:
@@ -129,4 +143,4 @@ def train_neural_network(x):
 
         print('fitment percent:',successful_runs/total_runs)
 
-train_neural_network(x)
+train_neural_network(x,n_classes,IMG_SIZE_PX,SLICE_COUNT,keep_rate)
