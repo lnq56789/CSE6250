@@ -1,7 +1,7 @@
 import urllib.request
 # myurl = 'https://s3.amazonaws.com/cse6250-nliu71/alldata1-50-50-20.npy'
 # data = urllib.request.urlopen(myurl).read()
-much_data = np.load("100samples-112-112-96.npy") #load pre-processed data
+much_data = np.load("../100samples-112-112-96.npy") #load pre-processed data
 
 import tensorflow as tf
 import numpy as np
