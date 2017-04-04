@@ -1,10 +1,10 @@
 import urllib.request
+import tensorflow as tf
+import numpy as np
+
 # myurl = 'https://s3.amazonaws.com/cse6250-nliu71/alldata1-50-50-20.npy'
 # data = urllib.request.urlopen(myurl).read()
 much_data = np.load("../100samples-112-112-96.npy") #load pre-processed data
-
-import tensorflow as tf
-import numpy as np
 
 IMG_SIZE_PX = 112
 SLICE_COUNT = 96
