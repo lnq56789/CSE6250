@@ -601,28 +601,28 @@ def main():
 
 
     #data_dir = 'C:/Users/Zimu/Desktop/Project/TrainingData/'
-    if processData:
-        data_dir = 'D:/S2/stage1/'
+    # if processData:
+    #     data_dir = 'D:/S2/stage1/'
 
-        patients = os.listdir(data_dir)
-        patients.sort()
-        patients = os.listdir(data_dir)
-        labels = pd.read_csv('C:/Users/Zimu/Desktop/Project/stage1_labels.csv', index_col=0)
-        numSuperPixels=100
-        much_data = []
-        for num,patient in enumerate(patients):
-            print(str(num) + ":" + patient)
-            if num % 100 == 0:
-                print(str(num) + ":" + patient)
-            try:
-                img_data,label = process_data(patient,labels,data_dir, img_px_size=IMG_SIZE_PX, hm_slices=SLICE_COUNT, superPixels = numSuperPixels)
-    #            np.save('imgData-{}-{}-{}-{}.npy'.format(IMG_SIZE_PX,IMG_SIZE_PX,SLICE_COUNT,patient), img_data)
-                #print(img_data.shape,label)
-                if (1-np.isscalar(img_data)):
-                    much_data.append([img_data,label])
-            except KeyError as e:
-                print('This is unlabeled data!')
-        np.save('alldata3-{}-{}-{}.npy'.format(IMG_SIZE_PX,IMG_SIZE_PX,SLICE_COUNT), much_data)
+    #     patients = os.listdir(data_dir)
+    #     patients.sort()
+    #     patients = os.listdir(data_dir)
+    #     labels = pd.read_csv('C:/Users/Zimu/Desktop/Project/stage1_labels.csv', index_col=0)
+    #     numSuperPixels=100
+    #     much_data = []
+    #     for num,patient in enumerate(patients):
+    #         print(str(num) + ":" + patient)
+    #         if num % 100 == 0:
+    #             print(str(num) + ":" + patient)
+    #         try:
+    #             img_data,label = process_data(patient,labels,data_dir, img_px_size=IMG_SIZE_PX, hm_slices=SLICE_COUNT, superPixels = numSuperPixels)
+    # #            np.save('imgData-{}-{}-{}-{}.npy'.format(IMG_SIZE_PX,IMG_SIZE_PX,SLICE_COUNT,patient), img_data)
+    #             #print(img_data.shape,label)
+    #             if (1-np.isscalar(img_data)):
+    #                 much_data.append([img_data,label])
+    #         except KeyError as e:
+    #             print('This is unlabeled data!')
+    #     np.save('alldata3-{}-{}-{}.npy'.format(IMG_SIZE_PX,IMG_SIZE_PX,SLICE_COUNT), much_data)
 
     much_data1 = np.load('alldata3-64-64-24.npy')
 
