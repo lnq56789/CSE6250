@@ -1,5 +1,5 @@
 import urllib.request
-
+import math
 import tensorflow as tf
 import numpy as np
 # myurl = 'https://s3.amazonaws.com/cse6250-nliu71/alldata1-50-50-20.npy'
