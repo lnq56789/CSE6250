@@ -42,14 +42,14 @@ def AlexNet(x,n_classes,IMG_SIZE_PX,SLICE_COUNT,keep_rate):
     #       3 x 3 x 3 patches, 256 channels, 384 features to compute.
     #       3 x 3 x 3 patches, 384 channels, 384 features to compute.
     #       3 x 3 x 3 patches, 384 channels, 256 features to compute.
-    weights = {'W_conv1':tf.Variable(tf.clip_by_value(tf.random_normal([11,11,11,1,96],stddev=1/math.sqrt(121*11))),-1,1),
-               'W_conv2':tf.Variable(tf.clip_by_value(tf.random_normal([5,5,5,96,256],stddev=1/math.sqrt(125*96))),-1,1),
-               'W_conv3':tf.Variable(tf.clip_by_value(tf.random_normal([3,3,3,256,384],stddev=1/math.sqrt(27*256))),-1,1),
-               'W_conv4':tf.Variable(tf.clip_by_value(tf.random_normal([3,3,3,384,384],stddev=1/math.sqrt(27*384))),-1,1),
-               'W_conv5':tf.Variable(tf.clip_by_value(tf.random_normal([3,3,3,384,256],stddev=1/math.sqrt(27*384))),-1,1),
-               'W_fc1':tf.Variable(tf.clip_by_value(tf.random_normal([602112,4096],stddev=1/math.sqrt(27))),-1,1),
-               'W_fc2':tf.Variable(tf.clip_by_value(tf.random_normal([4096,4096],stddev=1/math.sqrt(4096))),-1,1),
-               'out':tf.Variable(tf.clip_by_value(tf.random_normal([4096, n_classes],stddev=1/math.sqrt(4096))),-1,1)}
+    weights = {'W_conv1':tf.Variable(tf.clip_by_value(tf.random_normal([11,11,11,1,96],stddev=1/math.sqrt(121*11)),-1,1)),
+               'W_conv2':tf.Variable(tf.clip_by_value(tf.random_normal([5,5,5,96,256],stddev=1/math.sqrt(125*96)),-1,1)),
+               'W_conv3':tf.Variable(tf.clip_by_value(tf.random_normal([3,3,3,256,384],stddev=1/math.sqrt(27*256)),-1,1)),
+               'W_conv4':tf.Variable(tf.clip_by_value(tf.random_normal([3,3,3,384,384],stddev=1/math.sqrt(27*384)),-1,1)),
+               'W_conv5':tf.Variable(tf.clip_by_value(tf.random_normal([3,3,3,384,256],stddev=1/math.sqrt(27*384)),-1,1)),
+               'W_fc1':tf.Variable(tf.clip_by_value(tf.random_normal([602112,4096],stddev=1/math.sqrt(27)),-1,1)),
+               'W_fc2':tf.Variable(tf.clip_by_value(tf.random_normal([4096,4096],stddev=1/math.sqrt(4096)),-1,1)),
+               'out':tf.Variable(tf.clip_by_value(tf.random_normal([4096, n_classes],stddev=1/math.sqrt(4096)),-1,1))}
 
     biases = {'b_conv1':tf.Variable(tf.random_normal([96])),
               'b_conv2':tf.Variable(tf.random_normal([256])),
