@@ -106,8 +106,9 @@ def train_neural_network(x,n_classes,IMG_SIZE_PX,SLICE_COUNT,keep_rate):
     capped_gvs = [(ClipIfNotNone(grad), var) for grad, var in gradients]
     train_op = optimizer.apply_gradients(capped_gvs)
 
+    gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.95)
     hm_epochs = 20
-    with tf.Session() as sess:
+    with tf.Session(config=tf.ConfigProto(gpu_options=gpu_options)) as sess:
         sess.run(tf.global_variables_initializer())
 
         successful_runs = 0
