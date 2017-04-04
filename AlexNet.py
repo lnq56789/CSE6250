@@ -100,7 +100,7 @@ import time
 def train_neural_network(x,n_classes,IMG_SIZE_PX,SLICE_COUNT,keep_rate):
     prediction = AlexNet(x,n_classes,IMG_SIZE_PX,SLICE_COUNT,keep_rate)
     cost = tf.reduce_mean( tf.nn.softmax_cross_entropy_with_logits(logits=prediction,labels=y))
-    optimizer = tf.train.AdamOptimizer(learning_rate=1e-3).minimize(cost)
+    optimizer = tf.train.AdamOptimizer(learning_rate=1e-3)
 
     gradients =   optimizer.compute_gradients(cost)
     capped_gvs = [(ClipIfNotNone(grad), var) for grad, var in gradients]
