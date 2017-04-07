@@ -348,8 +348,8 @@ def google_net(x):
 
 much_data = data
 # If you are working with the basic sample data, use maybe 2 instead of 100 here... you don't have enough data to really do this
-train_data = much_data[:-100]
-validation_data = much_data[-100:]
+train_data = much_data[:-10]
+validation_data = much_data[-10:]
 import time
 
 def train_neural_network(x):
