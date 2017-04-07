@@ -339,9 +339,9 @@ def google_net(x):
     pool5 = avgpool3d(inception_5b_output,[1,7,7,7,1],[1,1,1,1,1])
 
     ###fc-relu-dropout
-    fc = tf.nn.relu(tf.matmul(dropout1, weights['W_fc'])+biases['b_fc'])
+    fc = tf.nn.relu(tf.matmul(pool5, weights['W_fc'])+biases['b_fc'])
     dropout1 = tf.nn.dropout(fc, keep_rate)
-    output = tf.matmul(fc, weights['out'])+biases['out']
+    output = tf.matmul(dropout1s, weights['out'])+biases['out']
 
     return output
 
