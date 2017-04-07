@@ -1,11 +1,11 @@
 import numpy as np
-data = np.load('../Data/muchdata-50-50-20.npy') #load pre-processed data
+data = np.load('../Data/100samples-112-112-96.npy') #load pre-processed data
 
 import tensorflow as tf
 import numpy as np
 
-IMG_SIZE_PX = 50
-SLICE_COUNT = 20
+IMG_SIZE_PX = 112
+SLICE_COUNT = 96
 
 n_classes = 2
 batch_size = 10
@@ -19,11 +19,11 @@ def conv3d(x, W, s):
     return tf.nn.conv3d(x, W, strides=s, padding='SAME')
 
 def maxpool3d(x,k,s):
-    #                        size of window         movement of window as you slide about
+    #                        size of window    movement of window as you slide about
     return tf.nn.max_pool3d(x, ksize=k, strides=s, padding='SAME')
 
 def avgpool3d(x,k,s):
-    #                        size of window         movement of window as you slide about
+    #                        size of window    movement of window as you slide about
     return tf.nn.avg_pool3d(x, ksize=k, strides=s, padding='VALID')
 
 def depthconcat(inputs):
@@ -46,13 +46,17 @@ def depthconcat(inputs):
     return tf.concat(concat_dim, padded_inputs, name=name)
 
 def google_net(x):
+    # input shape(224*224*)
     ### 22 Layers:
-    weights = {'W_conv1':tf.Variable(tf.random_normal([7,7,7,1,64])),
-               'W_conv2_reduce':tf.Variable(tf.random_normal([1,1,1,64,64])),
-               'W_conv2':tf.Variable(tf.random_normal([3,3,3,64,192])),
-
-               'W_inception_3a_1x1':tf.Variable(tf.random_normal([1,1,1,192,64])),
-               'W_inception_3a_3x3_reduce':tf.Variable(tf.random_normal([1,1,1,192,96])),
+                # conv1: 7 x 7 x 7 patches, 1 depth(channel), 64 filters
+    weights = {'W_conv1':tf.Variable(tf.random_normal([7,7,7,1,64],stddev=math.sqrt(2/7*7*7*1))), # need to set stddev=math.sqrt(2/units) according to https://arxiv.org/abs/1502.01852
+                # conv2_reduce: 1 x 1 x 1 patches, 64 depth, 64 filters
+               'W_conv2_reduce':tf.Variable(tf.random_normal([1,1,1,64,64],stddev=math.sqrt(2/64))),
+                # conv2: 3 x 3 x 3 patches, 64 depth, 192 filters
+               'W_conv2':tf.Variable(tf.random_normal([3,3,3,64,192],stddev=math.sqrt(2/3*3*3*64))),
+                # inception(3a)
+               'W_inception_3a_1x1':tf.Variable(tf.random_normal([1,1,1,192,64],stddev=math.sqrt(2/192))),
+               'W_inception_3a_3x3_reduce':tf.Variable(tf.random_normal([1,1,1,192,96],stddev=math.sqrt(2/64))),
                'W_inception_3a_3x3':tf.Variable(tf.random_normal([3,3,3,96,128])),
                'W_inception_3a_5x5_reduce':tf.Variable(tf.random_normal([1,1,1,192,16])),
                'W_inception_3a_5x5':tf.Variable(tf.random_normal([5,5,5,16,32])),
@@ -114,8 +118,8 @@ def google_net(x):
                'W_inception_5b_5x5':tf.Variable(tf.random_normal([5,5,5,48,128])),
                'W_inception_5b_pool_proj':tf.Variable(tf.random_normal([1,1,1,832,128])),
 
-               'W_fc':tf.Variable(tf.random_normal([49*49*256,4096])),
-               'out':tf.Variable(tf.random_normal([4096, n_classes]))}
+               'W_fc':tf.Variable(tf.random_normal([49*49*256,1024])),
+               'out':tf.Variable(tf.random_normal([1024, n_classes]))}
 
     biases = {'b_conv1':tf.Variable(tf.random_normal([64])),
               'b_conv2_reduce':tf.Variable(tf.random_normal([64])),
@@ -184,7 +188,7 @@ def google_net(x):
               'b_inception_5b_5x5':tf.Variable(tf.random_normal([128])),
               'b_inception_5b_pool_proj':tf.Variable(tf.random_normal([128])),
 
-              'b_fc':tf.Variable(tf.random_normal([1000])),
+              'b_fc':tf.Variable(tf.random_normal([1024])),
               'out':tf.Variable(tf.random_normal([n_classes]))}
 
     # normalize                      image X     image Y     image Z
