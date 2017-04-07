@@ -1,5 +1,5 @@
 import numpy as np
-data = np.load('../100samples-224-224-24.npy') #load pre-processed data
+data = np.load('../100sample-224-224-24.npy') #load pre-processed data
 
 import tensorflow as tf
 import numpy as np
