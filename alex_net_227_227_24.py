@@ -5,7 +5,7 @@ Created on Thu Mar 09 21:20:23 2017
 @author: Zimu
 """
 
-import dicom # for reading dicom files
+# import dicom # for reading dicom files
 import os # for doing directory operations
 import pandas as pd # for some simple data analysis (right now, just to load in the labels data and quickly reference it)
 import numpy as np
