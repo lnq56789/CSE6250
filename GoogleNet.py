@@ -199,12 +199,12 @@ def google_net(x):
     conv1 = tf.nn.relu(conv3d(x, weights['W_conv1'],[1,2,2,2,1])+biases['b_conv1'])
     pool1 = maxpool3d(conv1,[1,3,3,3,1],[1,2,2,2,1])
     # pool1_normalized = tf.reshape(pool1, [-1, 6*6*3*256])
-    lrn1 = tf.nn.lrn(pool1,4,bias=1.0,alpha=2e-05,beta=0.75)
+    # lrn1 = tf.nn.lrn(pool1,4,bias=1.0,alpha=2e-05,beta=0.75)
 
-    conv2_reduce = tf.nn.relu(conv3d(lrn1, weights['W_conv2_reduce'],[1,1,1,1,1])+ biases['b_conv2_reduce'])
+    conv2_reduce = tf.nn.relu(conv3d(pool1, weights['W_conv2_reduce'],[1,1,1,1,1])+ biases['b_conv2_reduce'])
     conv2 = tf.nn.relu(conv3d(conv2_reduce, weights['W_conv2'],[1,1,1,1,1])+ biases['b_conv2'])
-    lrn2 = tf.nn.lrn(conv2,5,bias=1.0,alpha=2e-05,beta=0.75)
-    pool2 = maxpool3d(lrn2,[1,3,3,3,1],[1,2,2,2,1])
+    #lrn2 = tf.nn.lrn(conv2,5,bias=1.0,alpha=2e-05,beta=0.75)
+    pool2 = maxpool3d(conv2,[1,3,3,3,1],[1,2,2,2,1])
 
     ### inception(3a)
     inception_3a_1x1 = tf.nn.relu(conv3d(pool2, weights['W_inception_3a_1x1'],[1,1,1,1,1])+biases['b_inception_3a_1x1'])
