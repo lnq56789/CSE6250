@@ -469,7 +469,7 @@ def main():
                 print('This is unlabeled data!')
         np.save('alldata3-{}-{}-{}.npy'.format(IMG_SIZE_PX,IMG_SIZE_PX,SLICE_COUNT), much_data)
 
-    much_data1 = np.load('100sample-224-224-24.npy')
+    much_data1 = np.load('../100sample-224-224-24.npy')
 
     train_data1 = much_data1[:-300]
     validation_data1 = much_data1[-300:]
