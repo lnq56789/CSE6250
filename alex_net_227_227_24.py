@@ -271,7 +271,7 @@ def conv3dT(x, W, outputShape, padding='Same'):
 def conv3d(x, W, s):
     return tf.nn.conv3d(x, W, strides=s, padding='SAME')
 
-def maxpool3d(x):
+def maxpool3d(x,k,s):
     #                        size of window         movement of window as you slide about
     return tf.nn.max_pool3d(x, ksize=k, strides=s, padding='SAME')
 
