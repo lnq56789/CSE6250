@@ -47,7 +47,7 @@ def depthconcat(inputs):
     return tf.concat(concat_dim, padded_inputs)
 
 def google_net(x):
-    # input shape(224*224*)
+    # input shape(224*224*24)
     ### 22 Layers:
                 # conv1: 7 x 7 x 7 patches, 1 depth(channel), 64 filters
     weights = {'W_conv1':tf.Variable(tf.random_normal([7,7,7,1,64],stddev=math.sqrt(2/7*7*7*1))), # need to set stddev=math.sqrt(2/units) according to https://arxiv.org/abs/1502.01852
@@ -119,7 +119,7 @@ def google_net(x):
                'W_inception_5b_5x5':tf.Variable(tf.random_normal([5,5,5,48,128],stddev=math.sqrt(2/125*48))),
                'W_inception_5b_pool_proj':tf.Variable(tf.random_normal([1,1,1,832,128],stddev=math.sqrt(2/832))),
 
-               'W_fc':tf.Variable(tf.random_normal([49*49*256,1024])),
+               'W_fc':tf.Variable(tf.random_normal([7*7*24*128,1024])),
                'out':tf.Variable(tf.random_normal([1024, n_classes]))}
 
     biases = {'b_conv1':tf.Variable(tf.random_normal([64])),
@@ -337,6 +337,7 @@ def google_net(x):
 
     ### average pool & dropout
     pool5 = avgpool3d(inception_5b_output,[1,7,7,7,1],[1,1,1,1,1])
+    pool5_normalized = tf.reshape(pool5, [-1, 7*7*24*128])
 
     ###fc-relu-dropout
     fc = tf.nn.relu(tf.matmul(pool5, weights['W_fc'])+biases['b_fc'])
