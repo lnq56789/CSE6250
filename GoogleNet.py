@@ -1,11 +1,11 @@
 import numpy as np
-data = np.load('../Data/100samples-112-112-96.npy') #load pre-processed data
+data = np.load('../100samples-224-224-24.npy') #load pre-processed data
 
 import tensorflow as tf
 import numpy as np
 
-IMG_SIZE_PX = 112
-SLICE_COUNT = 96
+IMG_SIZE_PX = 224
+SLICE_COUNT = 24
 
 n_classes = 2
 batch_size = 10
@@ -197,7 +197,8 @@ def google_net(x):
     ### conv-pool-lrn-conv-conv-lrn-pool
     conv1 = tf.nn.relu(conv3d(x, weights['W_conv1'],[1,2,2,2,1])+biases['b_conv1'])
     pool1 = maxpool3d(conv1,[1,3,3,3,1],[1,2,2,2,1])
-    lrn1 = tf.nn.lrn(pool1,5,bias=1.0,alpha=2e-05,beta=0.75)
+    # pool1_normalized = tf.reshape(pool1, [-1, 6*6*3*256])
+    lrn1 = tf.nn.lrn(pool1,4,bias=1.0,alpha=2e-05,beta=0.75)
 
     conv2_reduce = tf.nn.relu(conv3d(lrn1, weights['W_conv2_reduce'],[1,1,1,1,1])+ biases['b_conv2_reduce'])
     conv2 = tf.nn.relu(conv3d(conv2_reduce, weights['W_conv2'],[1,1,1,1,1])+ biases['b_conv2'])
@@ -337,8 +338,8 @@ def google_net(x):
     pool5 = avgpool3d(inception_5b_output,[1,7,7,7,1],[1,1,1,1,1])
 
     ###fc-relu-dropout
-    dropout1 = tf.nn.dropout(pool5, keep_rate)
     fc = tf.nn.relu(tf.matmul(dropout1, weights['W_fc'])+biases['b_fc'])
+    dropout1 = tf.nn.dropout(fc, keep_rate)
     output = tf.matmul(fc, weights['out'])+biases['out']
 
     return output
