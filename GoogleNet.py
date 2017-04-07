@@ -357,7 +357,7 @@ def train_neural_network(x):
 
     hm_epochs = 10
     with tf.Session() as sess:
-        sess.run(tf.global_variables_initializer())
+        sess.run(tf.initialize_all_variables())
 
         successful_runs = 0
         total_runs = 0
