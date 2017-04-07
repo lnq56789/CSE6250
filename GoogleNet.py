@@ -44,7 +44,7 @@ def depthconcat(inputs):
         paddings = tf.pad(paddings, paddings=[[0, 1], [0, 0]])
         padded_inputs.append(tf.pad(input_, paddings))
 
-    return tf.concat(concat_dim, padded_inputs, name=name)
+    return tf.concat(concat_dim, padded_inputs)
 
 def google_net(x):
     # input shape(224*224*)
