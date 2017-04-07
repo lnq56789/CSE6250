@@ -337,12 +337,12 @@ def google_net(x):
 
     ### average pool & dropout
     pool5 = avgpool3d(inception_5b_output,[1,7,7,7,1],[1,1,1,1,1])
-    pool5_normalized = tf.reshape(pool5, [-1, 7*7*24*128])
+    dropout1 = tf.nn.dropout(pool5, keep_rate)
+    pool5_normalized = tf.reshape(dropout1, [-1, 7*7*24*128])
 
     ###fc-relu-dropout
     fc = tf.nn.relu(tf.matmul(pool5_normalized, weights['W_fc'])+biases['b_fc'])
-    dropout1 = tf.nn.dropout(fc, keep_rate)
-    output = tf.matmul(dropout1, weights['out'])+biases['out']
+    output = tf.matmul(fc, weights['out'])+biases['out']
 
     return output
 
