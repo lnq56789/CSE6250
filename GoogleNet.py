@@ -31,7 +31,7 @@ def depthconcat(inputs):
     concat_dim = 3
     shapes = []
     for input_ in inputs:
-        shapes.append(tf.to_float(tf.shape(input_)[:3]))
+        shapes.append(tf.to_float(tf.shape(input_)[:4]))
     shape_tensor = tf.pack(shapes)
     max_dims = tf.reduce_max(shape_tensor, 0)
 
