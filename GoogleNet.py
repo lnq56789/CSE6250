@@ -340,7 +340,7 @@ def google_net(x):
     pool5_normalized = tf.reshape(pool5, [-1, 7*7*24*128])
 
     ###fc-relu-dropout
-    fc = tf.nn.relu(tf.matmul(pool5, weights['W_fc'])+biases['b_fc'])
+    fc = tf.nn.relu(tf.matmul(pool5_normalized, weights['W_fc'])+biases['b_fc'])
     dropout1 = tf.nn.dropout(fc, keep_rate)
     output = tf.matmul(dropout1s, weights['out'])+biases['out']
 
