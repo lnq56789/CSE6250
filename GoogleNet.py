@@ -28,11 +28,11 @@ def avgpool3d(x,k,s):
     return tf.nn.avg_pool3d(x, ksize=k, strides=s, padding='VALID')
 
 def depthconcat(inputs):
-    concat_dim = 3
+    concat_dim = 4
     shapes = []
     for input_ in inputs:
         shapes.append(tf.to_float(tf.shape(input_)[:4]))
-    shape_tensor = tf.pack(shapes)
+    shape_tensor = tf.stack(shapes)
     max_dims = tf.reduce_max(shape_tensor, 0)
 
     padded_inputs = []
@@ -40,7 +40,7 @@ def depthconcat(inputs):
         mean_diff = (max_dims - shapes[idx])/2.0
         pad_low = tf.floor(mean_diff)
         pad_high = tf.ceil(mean_diff)
-        paddings = tf.to_int32(tf.pack([pad_low, pad_high], axis=1))
+        paddings = tf.to_int32(tf.stack([pad_low, pad_high], axis=1))
         paddings = tf.pad(paddings, paddings=[[0, 1], [0, 0]])
         padded_inputs.append(tf.pad(input_, paddings))
 

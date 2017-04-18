@@ -352,7 +352,7 @@ def eval_in_batches(data, sess,n_classes,IMG_SIZE_PX,SLICE_COUNT,keep_rate):
     for begin in xrange(0, size):
         inputX = data[begin]
         eval_prediction = tf.nn.softmax(UConvNet(x,n_classes,IMG_SIZE_PX,SLICE_COUNT,keep_rate))
-        sess.run(tf.initialize_all_variables())
+        sess.run(tf.global_variables_initializer())
         predictions[begin] = sess.run(eval_prediction,feed_dict={x: inputX})
     return predictions
 def error_rate(predictions, labels):
@@ -378,7 +378,7 @@ def train_alex_net(x,y,train_data,validation_data,n_classes,IMG_SIZE_PX,SLICE_CO
 
     with tf.Session() as sess:
         print("initializing sess")
-        sess.run(tf.initialize_all_variables())
+        sess.run(tf.global_variables_initializer())
         saver = tf.train.Saver()
         successful_runs = 0
         total_runs = 0
@@ -471,8 +471,8 @@ def main():
 
     much_data1 = np.load('../100sample-224-224-24.npy')
 
-    train_data1 = much_data1[:-300]
-    validation_data1 = much_data1[-300:]
+    train_data1 = much_data1[:-10]
+    validation_data1 = much_data1[-10:]
 
 
 
